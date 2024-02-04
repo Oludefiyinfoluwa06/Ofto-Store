@@ -10,6 +10,6 @@ router.get('/:id', protectRoute, productDetails);
 
 router.get('/seller', protectSellerRoute, sellerProducts);
 
-router.post('/create', protectSellerRoute, upload, addProducts);
+router.post('/create', protectSellerRoute, upload.single('productImage'), addProducts);
 
 module.exports = router;
