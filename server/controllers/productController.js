@@ -40,7 +40,7 @@ const addProducts = async (req, res) => {
         return res.json({ 'error': 'Invalid input fields' });
     }
 
-    const product = await Product.create({ name, price, description, quantity, image });
+    const product = await Product.create({ seller: req.seller.id, name, price, description, quantity, image });
 
     if (!product) {
         return res.json({ 'error': 'An error occurred, please try again later' });
@@ -49,9 +49,41 @@ const addProducts = async (req, res) => {
     return res.json({ 'message': 'Product added successfully' });
 }
 
+const updateProduct = async (req, res) => {
+    const productId = req.params.id;
+
+    const { name, price, description, quantity, image } = req.nody;
+
+    if (validator.isEmpty(name) || !validator.isNumeric(price, { no_symbols: true }) || validator.isEmpty(description) || !validator.isInt(quantity, { min: 0 }) || !validator.isURL(image)) {
+        return res.json({ 'error': 'Invalid input fields' });
+    }
+
+    const product = await Product.findByIdAndUpdate(productId, { name, price, description, quantity, image }, { new: true });
+
+    if (!product) {
+        return res.json({ 'error': 'Product could not be found' });
+    }
+
+    return res.json({ 'message': 'Product updated successfully' });
+}
+
+const deleteProduct = async (req, res) => {
+    const productId = req.params.id;
+
+    const product = await Product.findByIdAndDelete(productId);
+
+    if (!product) {
+        return res.json({ 'error': 'Product could not be found' });
+    }
+
+    return res.json({ 'message': 'Product deleted successfully' });
+}
+
 module.exports = {
     allProducts,
     productDetails,
     sellerProducts,
     addProducts,
+    updateProduct,
+    deleteProduct,
 }

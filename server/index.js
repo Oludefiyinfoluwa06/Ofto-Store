@@ -6,6 +6,7 @@ require('dotenv').config();
 const buyerRoute = require('./routes/buyerRoute');
 const sellerRoute = require('./routes/sellerRoute');
 const productRoute = require('./routes/productRoute');
+const cartRoute = require('./routes/cartRoute');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/buyers', buyerRoute);
 app.use('/api/sellers', sellerRoute);
 app.use('/api/products', productRoute);
+app.use('/api/cart', cartRoute);
 
 app.get('/', (req, res) => res.send('Hello world'));
 
