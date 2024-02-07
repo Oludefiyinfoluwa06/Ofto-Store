@@ -1,9 +1,11 @@
-const { register, login, getProfile, updateProfile, deleteProfile } = require('../controllers/BuyerController');
+const { register, login, getProfile, updateProfile, deleteProfile, getOtp } = require('../controllers/buyerController');
 const { protectRoute } = require('../middlewares/authMiddleware');
 
 const router = require('express').Router();
 
 router.post('/register', register);
+
+router.post('/otp', getOtp);
 
 router.post('/login', login);
 

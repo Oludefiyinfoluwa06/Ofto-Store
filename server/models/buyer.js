@@ -46,7 +46,7 @@ const BuyerSchema = new Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
 });
 
 const Buyer = mongoose.model('Buyer', BuyerSchema);

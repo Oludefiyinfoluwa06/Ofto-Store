@@ -5,6 +5,47 @@ const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 }
 
+const generateAndSendOtp = (email) => {
+    let otp = Math.floor(100000 + (Math.random() * 900000));
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.USER_EMAIL,
+            pass: process.env.USER_PASSWORD
+        }
+    });
+
+    const mailOptions = {
+        from: process.env.USER_EMAIL,
+        to: email,
+        subject: 'OTP Email Verification',
+        html: `
+            <div>
+                <label>Ofto Store</label>
+                <hr />
+                <div>
+                    <h2>Hello there,</h2>
+                    <p>Your one-time password to complete registration process on Ofto Store is:</p>
+                    <h3>${otp}</h3>
+                    <p>Make sure not to share this one time password with anyone</p>
+                </div>
+                <hr />
+            </div>
+        `
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            console.log(err);
+        }
+
+        console.log('Email sent');
+    });
+
+    return otp;
+}
+
 const register = async (req, res) => {
     const { firstname, lastname, email, phone, dob, storeName, city, state, street, country, password } = req.body;
 
@@ -35,7 +76,7 @@ const register = async (req, res) => {
         return res.json({ 'error': 'An error occured while registering, try again later' });
     }
 
-    return res.json({ 'message': 'Registration successful' });
+    return res.json({ 'message': 'Registration successful, please check your email for OTP verification', 'otp': generateAndSendOtp(email) });
 }
 
 const login = async (req, res) => {
