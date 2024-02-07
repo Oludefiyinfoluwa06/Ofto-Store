@@ -7,6 +7,7 @@ const buyerRoute = require('./routes/buyerRoute');
 const sellerRoute = require('./routes/sellerRoute');
 const productRoute = require('./routes/productRoute');
 const cartRoute = require('./routes/cartRoute');
+const orderRoute = require('./routes/orderRoute');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ app.use('/api/buyers', buyerRoute);
 app.use('/api/sellers', sellerRoute);
 app.use('/api/products', productRoute);
 app.use('/api/cart', cartRoute);
+app.use('/api/orders', orderRoute);
 
 app.get('/', (req, res) => res.send('Hello world'));
 

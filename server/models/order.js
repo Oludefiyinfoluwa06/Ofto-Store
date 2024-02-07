@@ -3,16 +3,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
-    orderId: {
-        type: String,
-        required: true,
-    },
     buyer: {
         type: Schema.Types.ObjectId,
         required: true,
     },
     items: [
         {
+            seller: {
+                type: Schema.Types.ObjectId,
+                required: true,
+            },
             product: {
                 type: Schema.Types.ObjectId,
                 required: true,
@@ -28,18 +28,26 @@ const orderSchema = new Schema({
             quantity: {
                 type: Number,
                 required: true
-            },
-            image: {
-                type: String,
-                required: true
             }
         }
     ],
-    totalAmount: {
+    billingAddress: {
+        type: String,
+        required: true,
+    },
+    totalPrice: {
         type: Number,
         required: true,
     },
-    orderStatus: {
+    paymentMethod: {
+        type: String,
+        required: true,
+    },
+    paymentStatus: {
+        type: String,
+        required: true,
+    },
+    deliveryStatus: {
         type: String,
         required: true,
     },

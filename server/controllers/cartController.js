@@ -13,11 +13,7 @@ const getCartItems = async (req, res) => {
 }
 
 const addItem = async (req, res) => {
-    const { productId, name, price, quantity, image } = req.body;
-
-    if (validator.isEmpty(product) || validator.isEmpty(name) || !validator.isNumeric(price, { no_symbols: true }) || validator.isEmpty(description) || !validator.isInt(quantity, { min: 0 }) || !validator.isURL(image)) {
-        return res.json({ 'error': 'Invalid input fields' });
-    }
+    const { productId, name, price, image } = req.body;
 
     const productDetails = await Product.findById(productId);
 
