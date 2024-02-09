@@ -6,7 +6,7 @@ const getCartItems = async (req, res) => {
     const cart = await Cart.find();
 
     if (!cart) {
-        return res.json({ 'error': 'No cart item stored' });
+        return res.json({ 'error': 'You have no item in your cart' });
     }
 
     return res.json({ 'cart': cart });

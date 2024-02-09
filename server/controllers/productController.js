@@ -23,6 +23,23 @@ const productDetails = async (req, res) => {
     return res.json({ 'product': product });
 }
 
+const searchProducts = async (req, res) => {
+    const { query } = req.query;
+
+    const products = await Product.find({
+        $or: [
+            { name: { $regex: query, $options: 'i' } },
+            { category: { $regex: query, $options: 'i' } },
+        ]
+    });
+
+    if (!products) {
+        return res.json({ 'error': 'There are no products with that name or category' });
+    }
+
+    return res.json({ 'products': products });
+}
+
 const sellerProducts = async (req, res) => {
     const products = await Product.find({ seller: req.seller.id }).sort({ updatedAt: -1 });
 
@@ -34,13 +51,13 @@ const sellerProducts = async (req, res) => {
 }
 
 const addProducts = async (req, res) => {
-    const { name, price, description, quantity, image } = req.body;
+    const { name, price, description, quantity, category, image } = req.body;
 
-    if (validator.isEmpty(name) || !validator.isNumeric(price, { no_symbols: true }) || validator.isEmpty(description) || !validator.isInt(quantity, { min: 0 }) || !validator.isURL(image)) {
+    if (validator.isEmpty(name) || !validator.isNumeric(price, { no_symbols: true }) || validator.isEmpty(description) || !validator.isInt(quantity, { min: 0 }) || validator.isEmpty(category) || !validator.isURL(image)) {
         return res.json({ 'error': 'Invalid input fields' });
     }
 
-    const product = await Product.create({ seller: req.seller.id, name, price, description, quantity, image });
+    const product = await Product.create({ seller: req.seller.id, name, price, description, quantity, category, image });
 
     if (!product) {
         return res.json({ 'error': 'An error occurred, please try again later' });
@@ -52,13 +69,13 @@ const addProducts = async (req, res) => {
 const updateProduct = async (req, res) => {
     const productId = req.params.id;
 
-    const { name, price, description, quantity, image } = req.nody;
+    const { name, price, description, quantity, category, image } = req.nody;
 
-    if (validator.isEmpty(name) || !validator.isNumeric(price, { no_symbols: true }) || validator.isEmpty(description) || !validator.isInt(quantity, { min: 0 }) || !validator.isURL(image)) {
+    if (validator.isEmpty(name) || !validator.isNumeric(price, { no_symbols: true }) || validator.isEmpty(description) || !validator.isInt(quantity, { min: 0 }) || validator.isEmpty(category) || !validator.isURL(image)) {
         return res.json({ 'error': 'Invalid input fields' });
     }
 
-    const product = await Product.findByIdAndUpdate(productId, { name, price, description, quantity, image }, { new: true });
+    const product = await Product.findByIdAndUpdate(productId, { name, price, description, quantity, category, image }, { new: true });
 
     if (!product) {
         return res.json({ 'error': 'Product could not be found' });
@@ -82,6 +99,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
     allProducts,
     productDetails,
+    searchProducts,
     sellerProducts,
     addProducts,
     updateProduct,

@@ -6,6 +6,7 @@ require('dotenv').config();
 const buyerRoute = require('./routes/buyerRoute');
 const sellerRoute = require('./routes/sellerRoute');
 const productRoute = require('./routes/productRoute');
+const wishlistRoute = require('./routes/wishlistRoute');
 const cartRoute = require('./routes/cartRoute');
 const orderRoute = require('./routes/orderRoute');
 const verifyOtpRoute = require('./routes/verifyOtpRoute');
@@ -25,6 +26,7 @@ app.use('/api/buyers', buyerRoute);
 app.use('/api/sellers', sellerRoute);
 app.use('/api/products', productRoute);
 app.use('/api/cart', cartRoute);
+app.use('/api/wishlist', wishlistRoute);
 app.use('/api/orders', orderRoute);
 app.use('/api/otp', verifyOtpRoute);
 
